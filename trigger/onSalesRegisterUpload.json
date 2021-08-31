@@ -2,7 +2,7 @@
 	"name": "onSalesRegisterUpload",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [
 			{
 				"pipelineReference": {
