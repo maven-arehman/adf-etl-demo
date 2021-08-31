@@ -1,0 +1,9 @@
+{
+	"name": "etladfdemo",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "2dbab54f-d756-4a82-b05d-379fb38cc8f3",
+		"tenantId": "36d26159-a79a-4361-b5a2-fcbd5c93cabf"
+	}
+}
