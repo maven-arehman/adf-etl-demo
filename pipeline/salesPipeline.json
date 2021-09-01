@@ -263,6 +263,18 @@
 				}
 			}
 		],
+		"parameters": {
+			"dbName": {
+				"type": "string"
+			},
+			"fileNameSR": {
+				"type": "string"
+			},
+			"sheetName": {
+				"type": "string",
+				"defaultValue": "Sheet1"
+			}
+		},
 		"folder": {
 			"name": "etl"
 		},
