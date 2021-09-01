@@ -220,7 +220,13 @@
 				"inputs": [
 					{
 						"referenceName": "SalesTaxRegisterInput",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"fileName": {
+								"value": "@pipeline().parameters.fileNameSR",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
@@ -252,7 +258,13 @@
 				"typeProperties": {
 					"dataset": {
 						"referenceName": "SalesTaxRegisterInput",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"fileName": {
+								"value": "@pipeline().parameters.fileNameSR",
+								"type": "Expression"
+							}
+						}
 					},
 					"enableLogging": false,
 					"storeSettings": {
@@ -269,10 +281,6 @@
 			},
 			"fileNameSR": {
 				"type": "string"
-			},
-			"sheetName": {
-				"type": "string",
-				"defaultValue": "Sheet1"
 			}
 		},
 		"folder": {
