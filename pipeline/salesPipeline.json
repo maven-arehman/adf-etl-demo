@@ -24,7 +24,39 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "salesDataFlow",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"SalesRegister": {
+								"dbName": {
+									"value": "@pipeline().parameters.dbName",
+									"type": "Expression"
+								}
+							},
+							"itemsOnDB": {
+								"dbName": {
+									"value": "@pipeline().parameters.dbName",
+									"type": "Expression"
+								}
+							},
+							"InvoiceOnDB": {
+								"dbName": {
+									"value": "@pipeline().parameters.dbName",
+									"type": "Expression"
+								}
+							},
+							"InvoiceDetailsOnDB": {
+								"dbName": {
+									"value": "@pipeline().parameters.dbName",
+									"type": "Expression"
+								}
+							},
+							"CustomersOnDB": {
+								"dbName": {
+									"value": "@pipeline().parameters.dbName",
+									"type": "Expression"
+								}
+							}
+						}
 					},
 					"compute": {
 						"coreCount": 8,
@@ -232,7 +264,13 @@
 				"outputs": [
 					{
 						"referenceName": "tabSalesRegister",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"dbName": {
+								"value": "@pipeline().parameters.dbName",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			},
