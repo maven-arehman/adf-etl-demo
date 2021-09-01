@@ -42,6 +42,12 @@
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
+				"parameters": {
+					"dbName": {
+						"type": "string",
+						"defaultValue": "etl"
+					}
+				},
 				"annotations": [],
 				"type": "AzureMySql",
 				"typeProperties": {
@@ -59,6 +65,11 @@
 					"referenceName": "AzureBlobStorage1",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"fileName": {
+						"type": "string"
+					}
+				},
 				"folder": {
 					"name": "etl"
 				},
@@ -68,7 +79,10 @@
 					"sheetName": "Sheet1",
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "sales_tax_register.xlsx",
+						"fileName": {
+							"value": "@dataset().fileName",
+							"type": "Expression"
+						},
 						"folderPath": "input",
 						"container": "etl"
 					},
@@ -124,7 +138,10 @@
 			"properties": {
 				"linkedServiceName": {
 					"referenceName": "AzureMySql1",
-					"type": "LinkedServiceReference"
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"dbName": "etl"
+					}
 				},
 				"folder": {
 					"name": "etl"
@@ -160,7 +177,10 @@
 			"properties": {
 				"linkedServiceName": {
 					"referenceName": "AzureMySql1",
-					"type": "LinkedServiceReference"
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"dbName": "etl"
+					}
 				},
 				"folder": {
 					"name": "etl"
@@ -196,7 +216,10 @@
 			"properties": {
 				"linkedServiceName": {
 					"referenceName": "AzureMySql1",
-					"type": "LinkedServiceReference"
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"dbName": "etl"
+					}
 				},
 				"folder": {
 					"name": "etl"
@@ -256,7 +279,10 @@
 			"properties": {
 				"linkedServiceName": {
 					"referenceName": "AzureMySql1",
-					"type": "LinkedServiceReference"
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"dbName": "etl"
+					}
 				},
 				"folder": {
 					"name": "etl"
@@ -340,7 +366,10 @@
 			"properties": {
 				"linkedServiceName": {
 					"referenceName": "AzureMySql1",
-					"type": "LinkedServiceReference"
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"dbName": "etl"
+					}
 				},
 				"folder": {
 					"name": "etl"
@@ -746,7 +775,12 @@
 							{
 								"referenceName": "SalesTaxRegisterInput",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"fileName": {
+										"value": "@pipeline().parameters.fileNameSR",
+										"type": "Expression"
+									}
+								}
 							}
 						],
 						"outputs": [
@@ -780,7 +814,12 @@
 							"dataset": {
 								"referenceName": "SalesTaxRegisterInput",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"fileName": {
+										"value": "@pipeline().parameters.fileNameSR",
+										"type": "Expression"
+									}
+								}
 							},
 							"enableLogging": false,
 							"storeSettings": {
@@ -791,6 +830,14 @@
 						}
 					}
 				],
+				"parameters": {
+					"dbName": {
+						"type": "string"
+					},
+					"fileNameSR": {
+						"type": "string"
+					}
+				},
 				"folder": {
 					"name": "etl"
 				},
@@ -809,7 +856,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {

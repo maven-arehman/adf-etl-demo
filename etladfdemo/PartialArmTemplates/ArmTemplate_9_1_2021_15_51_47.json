@@ -6,18 +6,6 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "etladfdemo"
-		},
-		"AzureBlobStorage1_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
-		},
-		"AzureMySql1_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureMySql1'"
-		},
-		"onSalesRegisterUpload_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/ef27388f-d06e-473d-a0f0-81e304bbb66b/resourceGroups/etl/providers/Microsoft.Storage/storageAccounts/etldemo"
 		}
 	},
 	"variables": {
@@ -52,17 +40,8 @@
 						"typeProperties": {
 							"dataflow": {
 								"referenceName": "salesDataFlow",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"SalesRegister": {},
-									"itemsOnDB": {},
-									"InvoiceOnDB": {},
-									"InvoiceDetailsOnDB": {},
-									"CustomersOnDB": {}
-								}
+								"type": "DataFlowReference"
 							},
-							"staging": {},
 							"compute": {
 								"coreCount": 8,
 								"computeType": "General"
@@ -269,8 +248,7 @@
 						"outputs": [
 							{
 								"referenceName": "tabSalesRegister",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					},
@@ -328,7 +306,6 @@
 				"lastPublishTime": "2021-08-31T09:01:40Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/salesDataFlow')]",
 				"[concat(variables('factoryId'), '/datasets/SalesTaxRegisterInput')]",
 				"[concat(variables('factoryId'), '/datasets/tabSalesRegister')]"
 			]
@@ -404,9 +381,7 @@
 					}
 				]
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/tabCustomer')]",
@@ -443,9 +418,7 @@
 					"tableName": "customers"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureMySql1')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/tabItems')]",
@@ -482,9 +455,7 @@
 					"tableName": "items"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureMySql1')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/tabSalesInvoice')]",
@@ -545,9 +516,7 @@
 					"tableName": "salesinvoice"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureMySql1')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/tabSalesInvoiceDetails')]",
@@ -632,9 +601,7 @@
 					"tableName": "salesinvoicedetails"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureMySql1')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/tabSalesRegister')]",
@@ -731,155 +698,7 @@
 					"tableName": "salesregister"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureMySql1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
-				}
-			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureMySql1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"parameters": {
-					"dbName": {
-						"type": "string",
-						"defaultValue": "etl"
-					}
-				},
-				"annotations": [],
-				"type": "AzureMySql",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureMySql1_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/onSalesRegisterUpload')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "salesPipeline",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "BlobEventsTrigger",
-				"typeProperties": {
-					"blobPathBeginsWith": "/etl/blobs/input/",
-					"blobPathEndsWith": "sales_tax_register.xlsx",
-					"ignoreEmptyBlobs": true,
-					"scope": "[parameters('onSalesRegisterUpload_properties_typeProperties_scope')]",
-					"events": [
-						"Microsoft.Storage.BlobCreated"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/salesPipeline')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/salesDataFlow')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "etl"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "tabSalesRegister",
-								"type": "DatasetReference"
-							},
-							"name": "SalesRegister"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "tabItems",
-								"type": "DatasetReference"
-							},
-							"name": "itemsOnDB"
-						},
-						{
-							"dataset": {
-								"referenceName": "tabSalesInvoice",
-								"type": "DatasetReference"
-							},
-							"name": "InvoiceOnDB"
-						},
-						{
-							"dataset": {
-								"referenceName": "tabSalesInvoiceDetails",
-								"type": "DatasetReference"
-							},
-							"name": "InvoiceDetailsOnDB"
-						},
-						{
-							"dataset": {
-								"referenceName": "tabCustomer",
-								"type": "DatasetReference"
-							},
-							"name": "CustomersOnDB"
-						}
-					],
-					"transformations": [
-						{
-							"name": "DistinctItems"
-						},
-						{
-							"name": "SelectItemColumns"
-						},
-						{
-							"name": "SelectInvoiceColumn"
-						},
-						{
-							"name": "GenerateTotals"
-						},
-						{
-							"name": "SalesInvDetColumns"
-						},
-						{
-							"name": "CustomerColumns"
-						},
-						{
-							"name": "DistinctCustomers"
-						}
-					],
-					"script": "source(output(\n\t\tDate as timestamp,\n\t\tInvoice as string,\n\t\tCustomer as string,\n\t\tAddress as string,\n\t\tItem as string,\n\t\tQty as double,\n\t\tUoM as string,\n\t\tRate as double,\n\t\tGrossAmount as double,\n\t\tTaxRate as double,\n\t\tTaxAmount as double,\n\t\tNetAmount as double\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table',\n\tdateFormats: ['dd/MM/yyyy'],\n\tpartitionBy('hash', 1)) ~> SalesRegister\nSelectItemColumns aggregate(groupBy(Item),\n\teach(match(!in(['Item'],name)), $$ = first($$))) ~> DistinctItems\nSalesRegister select(mapColumn(\n\t\tItem,\n\t\tUoM\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectItemColumns\nSalesRegister select(mapColumn(\n\t\tDate,\n\t\tInvoice,\n\t\tCustomer,\n\t\tGrossAmount,\n\t\tTaxAmount,\n\t\tNetAmount\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectInvoiceColumn\nSelectInvoiceColumn aggregate(groupBy(Date,\n\t\tInvoice,\n\t\tCustomer),\n\tTotalGrossAmount = sum(GrossAmount),\n\t\tTotalTaxAmount = sum(TaxAmount),\n\t\tTotalNetAmount = sum(NetAmount)) ~> GenerateTotals\nSalesRegister select(mapColumn(\n\t\tInvoice,\n\t\tItem,\n\t\tQty,\n\t\tUoM,\n\t\tRate,\n\t\tGrossAmount,\n\t\tTaxRate,\n\t\tTaxAmount,\n\t\tNetAmount\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SalesInvDetColumns\nSalesRegister select(mapColumn(\n\t\tCustomer,\n\t\tAddress\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> CustomerColumns\nCustomerColumns aggregate(groupBy(Customer,\n\t\tAddress),\n\teach(match(!in(['Customer','Address'],name)), $$ = first($$))) ~> DistinctCustomers\nDistinctItems sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\titem as string,\n\t\tuom as string\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tmapColumn(\n\t\titem = Item,\n\t\tuom = UoM\n\t)) ~> itemsOnDB\nGenerateTotals sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tDate as timestamp,\n\t\tInvoiceNo as string,\n\t\tCustomer as string,\n\t\tTotalGrossAmount as decimal(10,2),\n\t\tTotalTaxAmount as decimal(10,2),\n\t\tTotalNetAmount as decimal(10,2)\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tmapColumn(\n\t\tDate,\n\t\tInvoiceNo = Invoice,\n\t\tCustomer,\n\t\tTotalGrossAmount,\n\t\tTotalTaxAmount,\n\t\tTotalNetAmount\n\t)) ~> InvoiceOnDB\nSalesInvDetColumns sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tid as integer,\n\t\tInvoiceNo as string,\n\t\tItem as string,\n\t\tQty as decimal(10,2),\n\t\tUoM as string,\n\t\tRate as decimal(10,2),\n\t\tGrossAmount as decimal(10,2),\n\t\tTaxRate as decimal(10,2),\n\t\tTaxAmount as decimal(10,2),\n\t\tNetAmount as decimal(10,2)\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tmapColumn(\n\t\tInvoiceNo = Invoice,\n\t\tItem,\n\t\tQty,\n\t\tUoM,\n\t\tRate,\n\t\tGrossAmount,\n\t\tTaxRate,\n\t\tTaxAmount,\n\t\tNetAmount\n\t)) ~> InvoiceDetailsOnDB\nDistinctCustomers sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tCustomer as string,\n\t\tAddress as string\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> CustomersOnDB"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/tabSalesRegister')]",
-				"[concat(variables('factoryId'), '/datasets/tabItems')]",
-				"[concat(variables('factoryId'), '/datasets/tabSalesInvoice')]",
-				"[concat(variables('factoryId'), '/datasets/tabSalesInvoiceDetails')]",
-				"[concat(variables('factoryId'), '/datasets/tabCustomer')]"
-			]
 		}
 	]
 }
