@@ -14,10 +14,6 @@
 		"AzureMySql1_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureMySql1'"
-		},
-		"onSalesRegisterUpload_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/ef27388f-d06e-473d-a0f0-81e304bbb66b/resourceGroups/etl/providers/Microsoft.Storage/storageAccounts/etldemo"
 		}
 	},
 	"variables": {
@@ -836,37 +832,6 @@
 				}
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/onSalesRegisterUpload')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "salesPipeline",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "BlobEventsTrigger",
-				"typeProperties": {
-					"blobPathBeginsWith": "/etl/blobs/input/",
-					"blobPathEndsWith": "sales_tax_register.xlsx",
-					"ignoreEmptyBlobs": true,
-					"scope": "[parameters('onSalesRegisterUpload_properties_typeProperties_scope')]",
-					"events": [
-						"Microsoft.Storage.BlobCreated"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/salesPipeline')]"
-			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/salesDataFlow')]",

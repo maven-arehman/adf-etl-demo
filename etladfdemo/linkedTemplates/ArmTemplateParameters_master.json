@@ -11,9 +11,6 @@
 		"AzureMySql1_connectionString": {
 			"value": ""
 		},
-		"onSalesRegisterUpload_properties_typeProperties_scope": {
-			"value": "/subscriptions/ef27388f-d06e-473d-a0f0-81e304bbb66b/resourceGroups/etl/providers/Microsoft.Storage/storageAccounts/etldemo"
-		},
 		"containerUri": {
 			"value": ""
 		},
