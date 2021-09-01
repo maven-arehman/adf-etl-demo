@@ -140,7 +140,15 @@
 					"referenceName": "AzureMySql1",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"dbName": "etl"
+						"dbName": {
+							"value": "@dataset().dbName",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"dbName": {
+						"type": "string"
 					}
 				},
 				"folder": {
@@ -179,7 +187,15 @@
 					"referenceName": "AzureMySql1",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"dbName": "etl"
+						"dbName": {
+							"value": "@dataset().dbName",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"dbName": {
+						"type": "string"
 					}
 				},
 				"folder": {
@@ -218,7 +234,15 @@
 					"referenceName": "AzureMySql1",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"dbName": "etl"
+						"dbName": {
+							"value": "@dataset().dbName",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"dbName": {
+						"type": "string"
 					}
 				},
 				"folder": {
@@ -281,7 +305,15 @@
 					"referenceName": "AzureMySql1",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"dbName": "etl"
+						"dbName": {
+							"value": "@dataset().dbName",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"dbName": {
+						"type": "string"
 					}
 				},
 				"folder": {
@@ -368,7 +400,15 @@
 					"referenceName": "AzureMySql1",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"dbName": "etl"
+						"dbName": {
+							"value": "@dataset().dbName",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"dbName": {
+						"type": "string"
 					}
 				},
 				"folder": {
@@ -572,11 +612,36 @@
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
-									"SalesRegister": {},
-									"itemsOnDB": {},
-									"InvoiceOnDB": {},
-									"InvoiceDetailsOnDB": {},
-									"CustomersOnDB": {}
+									"SalesRegister": {
+										"dbName": {
+											"value": "@pipeline().parameters.dbName",
+											"type": "Expression"
+										}
+									},
+									"itemsOnDB": {
+										"dbName": {
+											"value": "@pipeline().parameters.dbName",
+											"type": "Expression"
+										}
+									},
+									"InvoiceOnDB": {
+										"dbName": {
+											"value": "@pipeline().parameters.dbName",
+											"type": "Expression"
+										}
+									},
+									"InvoiceDetailsOnDB": {
+										"dbName": {
+											"value": "@pipeline().parameters.dbName",
+											"type": "Expression"
+										}
+									},
+									"CustomersOnDB": {
+										"dbName": {
+											"value": "@pipeline().parameters.dbName",
+											"type": "Expression"
+										}
+									}
 								}
 							},
 							"staging": {},
@@ -787,7 +852,12 @@
 							{
 								"referenceName": "tabSalesRegister",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"dbName": {
+										"value": "@pipeline().parameters.dbName",
+										"type": "Expression"
+									}
+								}
 							}
 						]
 					},
