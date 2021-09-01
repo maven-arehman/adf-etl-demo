@@ -5,7 +5,15 @@
 			"referenceName": "AzureMySql1",
 			"type": "LinkedServiceReference",
 			"parameters": {
-				"dbName": "etl"
+				"dbName": {
+					"value": "@dataset().dbName",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"dbName": {
+				"type": "string"
 			}
 		},
 		"folder": {
